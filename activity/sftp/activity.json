@@ -1,0 +1,55 @@
+{
+  "name": "sftp",
+  "version": "0.0.1",
+  "type": "flogo:activity",
+  "ref": "git.tibco.com/git/tibbyte/activity/sftp",
+  "description": "Simple SFTP Get/Put Method",
+  "author": "tibbyte",
+  "title": "Invoke SFTP Method",
+  "homepage": "https://git.tibco.com/git/tibbyte/activity/sftp",
+  "inputs":[
+    {
+      "name": "host",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "port",
+      "type": "integer",
+      "required": true
+    },
+    {
+      "name": "user",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "method",
+      "type": "string",
+      "required": true,
+      "allowed" : ["GET", "PUT","RENAME","DELETE"]
+    },
+    {
+      "name": "source",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "destination",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "type": "string",
+      "required": true
+    }
+  ]
+}
