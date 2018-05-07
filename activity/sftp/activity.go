@@ -54,13 +54,13 @@ func (a *SFTPActivity) Metadata() *activity.Metadata {
 // Eval implements activity.Activity.Eval
 func (a *SFTPActivity) Eval(context activity.Context) (done bool, err error) {
 
-	host := strings.ToUpper(context.GetInput(ivHost).(string))
+	host := context.GetInput(ivHost).(string)
 	port := context.GetInput(ivPort).(int)
-	user := strings.ToUpper(context.GetInput(ivUser).(string))
+	user := context.GetInput(ivUser).(string)
 	password := context.GetInput(ivPassword).(string)
 	method := strings.ToUpper(context.GetInput(ivMethod).(string))
-	source := strings.ToUpper(context.GetInput(ivSource).(string))
-	destination := strings.ToUpper(context.GetInput(ivDestination).(string))
+	source := context.GetInput(ivSource).(string)
+	destination := context.GetInput(ivDestination).(string)
 
 	//TODO -> create function to create ssh/sftp client
 	//TODO -> reuse ssh connection/sftp client after processing and evict after no minimum usage
@@ -100,7 +100,7 @@ func (a *SFTPActivity) Eval(context activity.Context) (done bool, err error) {
 			return true, err
 		}
 		defer r.Close()
-		w, err := os.OpenFile(destination, syscall.O_WRONLY, 0600)
+		w, err := os.OpenFile(destination, syscall.O_WRONLY|os.O_CREATE, 0755)
 		if err != nil {
 			log.Errorf("unable to open destination file: %v", err)
 			return true, err
@@ -122,7 +122,7 @@ func (a *SFTPActivity) Eval(context activity.Context) (done bool, err error) {
 			return true, err
 		}
 		defer r.Close()
-		w, err := c.OpenFile(destination, syscall.O_WRONLY)
+		w, err := c.OpenFile(destination, syscall.O_WRONLY|os.O_CREATE)
 		if err != nil {
 			log.Errorf("unable to open destination file: %v", err)
 			return true, err
