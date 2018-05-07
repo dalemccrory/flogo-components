@@ -57,7 +57,7 @@ func (a *SFTPActivity) Eval(context activity.Context) (done bool, err error) {
 	host := strings.ToUpper(context.GetInput(ivHost).(string))
 	port := context.GetInput(ivPort).(int)
 	user := strings.ToUpper(context.GetInput(ivUser).(string))
-	password := strings.ToUpper(context.GetInput(ivPassword).(string))
+	password := context.GetInput(ivPassword).(string)
 	method := strings.ToUpper(context.GetInput(ivMethod).(string))
 	source := strings.ToUpper(context.GetInput(ivSource).(string))
 	destination := strings.ToUpper(context.GetInput(ivDestination).(string))
