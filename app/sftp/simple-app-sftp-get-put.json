@@ -1,0 +1,212 @@
+{
+  "name": "SFTP",
+  "type": "flogo:app",
+  "version": "0.0.1",
+  "appModel": "1.0.0",
+  "description": "SFTP Sample App",
+  "triggers": [
+    {
+      "id": "timer",
+      "ref": "github.com/TIBCOSoftware/flogo-contrib/trigger/timer",
+      "name": "Timer",
+      "description": "Simple Timer trigger",
+      "settings": {},
+      "handlers": [
+        {
+          "action": {
+            "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow",
+            "data": {
+              "flowURI": "res://flow:sftp_get_file"
+            }
+          },
+          "settings": {
+            "repeating": "false",
+            "notImmediate": "false",
+            "startDate": "2018-01-01T12:00:00Z00:00",
+            "hours": null,
+            "minutes": null,
+            "seconds": null
+          }
+        },
+        {
+          "action": {
+            "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow",
+            "data": {
+              "flowURI": "res://flow:sftp_put_file"
+            }
+          },
+          "settings": {
+            "repeating": "false",
+            "notImmediate": "false",
+            "startDate": "2018-01-01T12:00:00Z00:00",
+            "hours": null,
+            "minutes": null,
+            "seconds": null
+          }
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "flow:sftp_get_file",
+      "data": {
+        "name": "SFTPGetFile",
+        "description": "Sample Flow for SFTP Get File",
+        "tasks": [
+          {
+            "id": "sftp_2",
+            "name": "Invoke SFTP Method",
+            "description": "Simple SFTP Get/Put Method",
+            "activity": {
+              "ref": "github.com/gccn-tibco/flogo-components/activity/sftp",
+              "input": {
+                "host": "192.168.11.3",
+                "port": "22",
+                "user": "tibadm",
+                "password": "xxxxxx",
+                "method": "GET",
+                "source": "/tmp/sftptest/server/test-server.txt",
+                "destination": "/tmp/sftptest/local/test-server.txt"
+              }
+            }
+          },
+          {
+            "id": "log_3",
+            "name": "Log Message",
+            "description": "Simple Log Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+              "input": {
+                "message": "",
+                "flowInfo": "false",
+                "addToFlow": "false"
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "assign",
+                    "value": "$activity[sftp_2].result",
+                    "mapTo": "message"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "links": [
+          {
+            "from": "sftp_2",
+            "to": "log_3"
+          }
+        ],
+        "errorHandler": {
+          "tasks": [
+            {
+              "id": "log_5",
+              "name": "Log Error",
+              "description": "Simple Log Activity",
+              "activity": {
+                "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+                "input": {
+                  "message": null,
+                  "flowInfo": "false",
+                  "addToFlow": "false"
+                },
+                "mappings": {
+                  "input": [
+                    {
+                      "type": "assign",
+                      "value": "$error.message",
+                      "mapTo": "addToFlow"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "flow:sftp_put_file",
+      "data": {
+        "name": "SFTPPutFile",
+        "description": "Sample SFTP Put File",
+        "tasks": [
+          {
+            "id": "sftp_2",
+            "name": "Invoke SFTP Method",
+            "description": "Simple SFTP Get/Put Method",
+            "activity": {
+              "ref": "github.com/gccn-tibco/flogo-components/activity/sftp",
+              "input": {
+                "host": "192.168.11.3",
+                "port": "22",
+                "user": "tibadm",
+                "password": "xxxxxx",
+                "method": "PUT",
+                "source": "/tmp/sftptest/local/test-local.txt",
+                "destination": "/tmp/sftptest/server/test-local.txt"
+              }
+            }
+          },
+          {
+            "id": "log_3",
+            "name": "Log Message",
+            "description": "Simple Log Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+              "input": {
+                "message": "",
+                "flowInfo": "false",
+                "addToFlow": "false"
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "assign",
+                    "value": "$activity[sftp_2].result",
+                    "mapTo": "message"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "links": [
+          {
+            "from": "sftp_2",
+            "to": "log_3"
+          }
+        ],
+        "errorHandler": {
+          "tasks": [
+            {
+              "id": "log_5",
+              "name": "Log Error",
+              "description": "Simple Log Activity",
+              "activity": {
+                "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+                "input": {
+                  "message": null,
+                  "flowInfo": "false",
+                  "addToFlow": "false"
+                },
+                "mappings": {
+                  "input": [
+                    {
+                      "type": "assign",
+                      "value": "$error.message",
+                      "mapTo": "message"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
