@@ -2,11 +2,11 @@
   "name": "sftp",
   "version": "0.0.1",
   "type": "flogo:activity",
-  "ref": "git.tibco.com/git/tibbyte/activity/sftp",
+  "ref": "github.com/gccn-tibco/flogo-components/activity/sftp",
   "description": "Simple SFTP Get/Put Method",
   "author": "tibbyte",
   "title": "Invoke SFTP Method",
-  "homepage": "https://git.tibco.com/git/tibbyte/activity/sftp",
+  "homepage": "https://github.com/gccn-tibco/flogo-components/activity/sftp",
   "inputs":[
     {
       "name": "host",
