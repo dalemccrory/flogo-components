@@ -55,7 +55,7 @@ func (a *SFTPActivity) Metadata() *activity.Metadata {
 func (a *SFTPActivity) Eval(context activity.Context) (done bool, err error) {
 
 	host := strings.ToUpper(context.GetInput(ivHost).(string))
-	port := strings.ToUpper(context.GetInput(ivPort).(string))
+	port := context.GetInput(ivPort).(int)
 	user := strings.ToUpper(context.GetInput(ivUser).(string))
 	password := strings.ToUpper(context.GetInput(ivPassword).(string))
 	method := strings.ToUpper(context.GetInput(ivMethod).(string))
